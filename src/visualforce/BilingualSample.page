@@ -1,0 +1,13 @@
+<apex:page>
+	<script src="/soap/ajax/35.0/connection.js"></script>
+	<script src="/soap/ajax/35.0/apex.js"></script>
+	<script src="{!URLFOR($Resource.BilingualSample, 'app.js')}"></script>
+	<script>
+	sforce.connection.sessionId = '{!$Api.SESSION_ID}';
+	window.addEventListener('DOMContentLoaded', function () {
+		var root = document.getElementById('content');
+		BilingualSample.initVisualforce(root);
+	});
+	</script>
+	<div id="content"></div>
+</apex:page>

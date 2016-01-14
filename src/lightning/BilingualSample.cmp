@@ -1,0 +1,7 @@
+<aura:component controller="BilingualSample"
+		implements="force:appHostable,flexipage:availableForAllPageTypes">
+	<ltng:require
+		scripts="/resource/BilingualSample/app.js?${timestamp}"
+		afterScriptsLoaded="{!c.scriptsLoaded}"/>
+		<div id="{!globalId + '_content'}" />
+</aura:component>
