@@ -24,7 +24,7 @@ class BilingualSampleComponent extends React.Component {
   }
   render() {
     var rows = this.state.accounts.map((acc) => {
-      return <tr><td>{acc.Name}</td></tr>
+      return <tr key={acc.Id}><td>{acc.Name}</td></tr>
     });
     var getAccountProcess = (() => {
       this.state.dao.getAccounts();
@@ -33,7 +33,7 @@ class BilingualSampleComponent extends React.Component {
       <button onClick={getAccountProcess}>Get Accounts</button>
       <br/>
       <table>
-        {rows}
+        <tbody>{rows}</tbody>
       </table>
     </div>;
   }
