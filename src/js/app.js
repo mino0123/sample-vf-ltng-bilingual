@@ -54,14 +54,13 @@ class WebServiceDAO extends EventEmitter {
 class LightningDAO extends EventEmitter {
   constructor(cmp) {
     super();
-    var self = this;
     this.ltng = cmp;
     this.getAccounts = this._getAccounts.bind(this);
   }
   initLightningCallback() {
     this.callback = $A.getCallback(function () {
-      self.emit('callback');
-    });
+      this.emit('callback');
+    }.bind(this));
   }
   _getAccounts() {
     var self = this;
@@ -84,11 +83,11 @@ class LightningDAO extends EventEmitter {
 window.BilingualSample = {
   initLightning: function (target, ltngCmp) {
     var dao = new LightningDAO(ltngCmp);
+    dao.initLightningCallback();
     ReactDom.render(<BilingualSampleComponent dao={dao} />, target);
   },
   initVisualforce: function (target) {
     var dao = new WebServiceDAO();
-    dao.initLightningCallback();
     ReactDom.render(<BilingualSampleComponent dao={dao} />, target);
   }
 };
