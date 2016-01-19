@@ -9,10 +9,10 @@ class BilingualSampleComponent extends React.Component {
     super(props);
     this.state = {
       accounts: [],
-      dao: props.dao
+      connection: props.connection
     };
     this.handleGetAccounts = this._handleGetAccounts.bind(this);
-    this.state.dao.on('getAccounts', this.handleGetAccounts);
+    this.state.connection.on('getAccounts', this.handleGetAccounts);
   }
   componentWillReceiveProps(nextProps) {
     this.state.accounts
@@ -27,7 +27,7 @@ class BilingualSampleComponent extends React.Component {
       return <tr key={acc.Id}><td>{acc.Name}</td></tr>
     });
     var getAccountProcess = (() => {
-      this.state.dao.getAccounts();
+      this.state.connection.getAccounts();
     }).bind(this);
     return <div>
       <button onClick={getAccountProcess}>Get Accounts</button>
@@ -40,7 +40,13 @@ class BilingualSampleComponent extends React.Component {
 };
 
 
-class WebServiceDAO extends EventEmitter {
+class ApexConnection extends EventEmitter {
+  getAccounts() {
+    throw new Error('ApexConnection#getAccounts does not implemented');
+  }
+};
+
+class WebServiceConnection extends ApexConnection {
   constructor() {
     super();
     this.getAccounts = this._getAccounts.bind(this);
@@ -51,7 +57,7 @@ class WebServiceDAO extends EventEmitter {
   }
 }
 
-class LightningDAO extends EventEmitter {
+class LightningConnection extends ApexConnection {
   constructor(cmp) {
     super();
     this.ltng = cmp;
@@ -82,13 +88,13 @@ class LightningDAO extends EventEmitter {
 
 window.BilingualSample = {
   initLightning: function (target, ltngCmp) {
-    var dao = new LightningDAO(ltngCmp);
-    dao.initLightningCallback();
-    ReactDom.render(<BilingualSampleComponent dao={dao} />, target);
+    var conn = new LightningConnection(ltngCmp);
+    conn.initLightningCallback();
+    ReactDom.render(<BilingualSampleComponent connection={conn} />, target);
   },
   initVisualforce: function (target) {
-    var dao = new WebServiceDAO();
-    ReactDom.render(<BilingualSampleComponent dao={dao} />, target);
+    var conn = new WebServiceConnection();
+    ReactDom.render(<BilingualSampleComponent connection={conn} />, target);
   }
 };
 
