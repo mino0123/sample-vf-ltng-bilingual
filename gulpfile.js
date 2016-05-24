@@ -49,8 +49,12 @@ gulp.task('deploy', (cb) => {
 
   const componentBody = fs.readFileSync('./src/lightning/BilingualSample.cmp', 'utf8')
     .replace('${timestamp}', Date.now());
+  const auraMeta = metadata.AuraDefinitionBundle({
+    apiVersion: '36.0'
+  });
   const auraStream = gulp.src('./src/lightning/BilingualSampleController.js')
     .pipe(file('./src/lightning/BilingualSample.cmp', componentBody))
+    .pipe(file('./src/lightning/BilingualSample.cmp-meta.xml', auraMeta))
     .pipe(rename({ dirname: 'src/aura/BilingualSample' }))
 
   const packagexml = metadata.Package({ version: API_VERSION, types: [
