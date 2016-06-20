@@ -73,10 +73,12 @@ class LightningConnection extends ApexConnection {
     this.once('callback', function () {
       var action = this.ltng.get('c.getAccounts');
       action.setCallback(this.ltng, function (response) {
-        if (response.state === 'SUCCESS') {
-          self.emit('getAccounts', response.returnValue);
+        var state = response.getState();
+        var retVal = response.getReturnValue();
+        if (state === 'SUCCESS') {
+          self.emit('getAccounts', retVal);
         } else {
-          self.emit('error', response.error);
+          self.emit('error', response.getError());
         }
       });
       $A.enqueueAction(action);
